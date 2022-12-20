@@ -7,14 +7,16 @@ import 'react-tippy/dist/tippy.css'
 // import { RadioGroup } from '@headlessui/react'
 
 export default function Home() {
-  const [promptInput, setPromptInput] = useState("");
-  const [temp, setTemp] = useState(0.5);
+  const [promptInput, setPromptInput] = useState("Describe 5 business use cases for ChatGPT in the style of Tim Ferris. ");
+  const [temp, setTemp] = useState(0.7);
   const [respLimit, setRespLimit] = useState(200);
   const [result, setResult] = useState();
   const [model, setModel] = useState('text-davinci-003');
+  const [loading, setLoading] = useState(false);
 
   async function onSubmit(event) {
     event.preventDefault();
+    setLoading(true);
     const response = await fetch("/api/openprompt", {
       method: "POST",
       headers: {
@@ -28,8 +30,8 @@ export default function Home() {
       }),
     });
     const data = await response.json();
+    setLoading(false);
     setResult(data.result);
-    setPromptInput("");
   }
 
   return (
@@ -65,16 +67,19 @@ export default function Home() {
             type="text"
             name="prompt"
             placeholder="Enter a prompt"
+            rows="5"
             value={promptInput}
             onChange={(e) => setPromptInput(e.target.value)}
           />
           <input style={{ marginBottom: 20 }} type="submit" value="Generate" disabled={!promptInput.length} />
         </form>
+        {loading && <p>Generating...</p>}
         {result &&
-          <div style={{ whiteSpace: 'pre-wrap', margin: '0 auto', maxWidth: 800, minWidth: 500, padding: 10, background: '#eee', filter: `invert(${model === 'text-davinci-003' ? 0 : .9})` }}>
+          <div style={{ whiteSpace: 'pre-wrap', margin: '0 auto', maxWidth: 800, minWidth: 500, padding: 10, background: '#eee', filter: `invert(${model === 'text-davinci-003' ? 0 : .9})`, border: '1px solid #ddd', borderRadius: 8 }}>
             {result}
           </div>
         }
+        <div style={{ marginTop: 80 }} />
       </main >
     </div >
   );
