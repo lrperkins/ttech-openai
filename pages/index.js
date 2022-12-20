@@ -35,12 +35,12 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>OpenAI Quickstart</title>
-        <link rel="icon" href="/dog.png" />
+        <title>T Tech OpenAI </title>
+        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main className={styles.main}>
-        <img src="/dog.png" className={styles.icon} />
+        <img src="/trexlogo.png" className={styles.icon} />
         <h3>OpenAI Chat GPT</h3>
         <form onSubmit={onSubmit}>
 
